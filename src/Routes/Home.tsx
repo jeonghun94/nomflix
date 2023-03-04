@@ -1,12 +1,9 @@
-import { useQuery } from "react-query";
 import styled from "styled-components";
 import { motion, AnimatePresence, useScroll } from "framer-motion";
-import { getMovies, IGetMoviesResult } from "../api";
 import { makeImagePath } from "../utils";
 import { useNavigate, useMatch, PathMatch } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { indexState, leavingState, offsetState } from "../atoms";
-import HomeSlider from "../Components/HomeSlider";
+import Slider from "../Components/HomeSlider";
+import { useHomeQuery } from "../utils/useQuery";
 
 const Wrapper = styled.div`
   background: black;
@@ -84,50 +81,63 @@ const BigOverview = styled.p`
   color: ${(props) => props.theme.white.lighter};
 `;
 
+const Sliders = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 200px;
+`;
 const Home = () => {
   const navigate = useNavigate();
-  const offset = useRecoilValue(offsetState);
   const { scrollY } = useScroll();
   const bigMovieMatch: PathMatch<string> | null = useMatch("/movies/:id");
-  const { data, isLoading } = useQuery<IGetMoviesResult>(
-    ["movies", "nowPlaying"],
-    getMovies
-  );
+
+  const [
+    { data: nowPlayingData, isLoading: nowPlayingLoading },
+    { data: topRatedData, isLoading: topRatedLoading },
+    { data: upComingData, isLoading: upComingLoading },
+  ] = useHomeQuery();
 
   const onOverlayClick = () => navigate("/");
   const clickedMovie =
     bigMovieMatch?.params.id &&
-    data?.results.find((movie) => movie.id === +bigMovieMatch.params.id!);
-
-  const setIndex = useSetRecoilState(indexState);
-  const [leaving, setLeaving] = useRecoilState(leavingState);
-
-  const incraseIndex = () => {
-    if (data) {
-      if (leaving) return;
-      toggleLeaving();
-      const totalMovies = data.results.length - 1;
-      const maxIndex = Math.floor(totalMovies / offset) - 1;
-      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
-    }
-  };
-  const toggleLeaving = () => setLeaving((prev) => !prev);
+    nowPlayingData?.results.find(
+      (movie) => movie.id === +bigMovieMatch.params.id!
+    );
 
   return (
     <Wrapper>
-      {isLoading ? (
+      {nowPlayingLoading || topRatedLoading || upComingLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
           <Banner
-            onClick={incraseIndex}
-            bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}
+            bgPhoto={makeImagePath(
+              nowPlayingData?.results[0].backdrop_path || ""
+            )}
           >
-            <Title>{data?.results[0].title}</Title>
-            <Overview>{data?.results[0].overview}</Overview>
+            <Title>{nowPlayingData?.results[0].title}</Title>
+            <Overview>{nowPlayingData?.results[0].overview}</Overview>
           </Banner>
 
-          <HomeSlider data={data?.results!} tpye="now_playing" />
+          <Sliders>
+            <Slider
+              data={nowPlayingData?.results!}
+              type="nowPlaying"
+              title="지금 뜨는 콘텐츠"
+            />
+            <Slider
+              data={topRatedData?.results!}
+              type="topRated"
+              title="오늘 대한민국 Top 10 영화"
+            />
+            <Slider
+              data={upComingData?.results!}
+              type="upComing"
+              title="새로 올라온 콘텐츠"
+            />
+          </Sliders>
 
           <AnimatePresence>
             {bigMovieMatch ? (

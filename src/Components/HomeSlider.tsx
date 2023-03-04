@@ -1,14 +1,16 @@
+import styled from "styled-components";
+import useWindowDimensions from "./useDimensions";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import styled from "styled-components";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { indexState, leavingState, offsetState } from "../atoms";
 import { makeImagePath } from "../utils";
-import useWindowDimensions from "./useDimensions";
+import { useState } from "react";
 
 const Slider = styled.div`
   position: relative;
   top: -100px;
+  margin: 30px 0px 0px 60px;
 `;
 
 const Row = styled(motion.div)`
@@ -77,7 +79,8 @@ const infoVariants = {
 
 interface HomeSliderProps {
   data: IMovie[];
-  tpye: "now_playing" | "top_rated" | "upcoming";
+  type: "nowPlaying" | "topRated" | "upComing";
+  title: string;
 }
 
 interface IMovie {
@@ -88,23 +91,111 @@ interface IMovie {
   overview: string;
 }
 
-const HomeSlider = ({ data }: HomeSliderProps) => {
+const Heading = styled.h1`
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+
+  color: white;
+`;
+
+const ChevronLeft = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    className="bi bi-chevron-left"
+    viewBox="0 0 16 16"
+  >
+    <path
+      fill-rule="evenodd"
+      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+    />
+  </svg>
+);
+
+const ChevronRight = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    className="bi bi-chevron-right"
+    viewBox="0 0 16 16"
+  >
+    <path
+      fill-rule="evenodd"
+      d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+    />
+  </svg>
+);
+const HomeSlider = ({ data, type, title }: HomeSliderProps) => {
   const navigate = useNavigate();
-  const setLeaving = useSetRecoilState(leavingState);
-  const offset = useRecoilValue(offsetState);
-  const index = useRecoilValue(indexState);
   const width = useWindowDimensions();
+  // const setLeaving = useSetRecoilState(leavingState);
+  // const index = useRecoilValue(indexState);
+  const offset = useRecoilValue(offsetState);
   const onBoxClicked = (movieId: number) => {
     navigate(`/movies/${movieId}`);
   };
 
+  const [index, setIndex] = useRecoilState(indexState);
+  const [leaving, setLeaving] = useRecoilState(leavingState);
+  const toggleLeaving = () => setLeaving((prev) => !prev);
+  const [back, setBack] = useState(false);
+
+  const increaseIndex = async () => {
+    if (data) {
+      if (leaving) return;
+      toggleLeaving();
+      await setBack(false);
+      const totalMovies = data.length - 1;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+    }
+  };
+  const decreaseIndex = async () => {
+    if (data) {
+      if (leaving) return;
+      toggleLeaving();
+      await setBack(true);
+      const totalMovies = data.length - 1;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      setIndex((prev) => {
+        return prev === 0 ? maxIndex : prev - 1;
+      });
+    }
+  };
+  const SliderButton = styled.button<{ position: "left" | "right" }>`
+    position: absolute;
+    width: 3rem;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    z-index: 10;
+    align-items: center;
+    left: ${(props) => (props.position === "left" ? "0" : "")};
+    right: ${(props) => (props.position === "right" ? "0" : "")};
+  `;
+
   return (
     <Slider>
+      <Heading>{title}</Heading>
       <AnimatePresence
         initial={false}
         onExitComplete={() => setLeaving((prev) => !prev)}
       >
+        <SliderButton position="left" onClick={decreaseIndex}>
+          <ChevronLeft />
+        </SliderButton>
+        <SliderButton position="right" onClick={increaseIndex}>
+          <ChevronRight />
+        </SliderButton>
         <Row
+          custom={back}
           initial={{ x: width + 10 }}
           animate={{ x: 0 }}
           exit={{ x: -width - 10 }}

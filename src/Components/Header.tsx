@@ -33,7 +33,6 @@ const Logo = styled(motion.svg)`
   fill: ${(props) => props.theme.red};
   path {
     stroke-width: 6px;
-    stroke: white;
   }
 `;
 
@@ -113,6 +112,7 @@ const navVariants = {
   },
   scroll: {
     backgroundColor: "rgba(0, 0, 0, 1)",
+    zIndex: 2,
   },
 };
 
@@ -145,7 +145,7 @@ function Header() {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<IForm>();
   const onValid = (data: IForm) => {
-    navigate(`${process.env.PUBLIC_URL}/search?keyword=${data.keyword}`);
+    navigate(`/search?keyword=${data.keyword}`);
   };
 
   return (
