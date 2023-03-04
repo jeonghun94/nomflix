@@ -40,6 +40,7 @@ const Logo = styled(motion.svg)`
 const Items = styled.ul`
   display: flex;
   align-items: center;
+  font-weight: 600;
 `;
 
 const Item = styled.li`
@@ -117,8 +118,8 @@ const navVariants = {
 
 function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
-  const homeMatch = useMatch("/");
-  const tvMatch = useMatch("/tv");
+  const homeMatch = useMatch("/" || `${process.env.PUBLIC_URL}/`);
+  const tvMatch = useMatch("/tv" || `${process.env.PUBLIC_URL}/tv`);
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
   const { scrollY } = useScroll();
@@ -144,7 +145,7 @@ function Header() {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<IForm>();
   const onValid = (data: IForm) => {
-    navigate(`/search?keyword=${data.keyword}`);
+    navigate(`${process.env.PUBLIC_URL}/search?keyword=${data.keyword}`);
   };
 
   return (
@@ -163,11 +164,11 @@ function Header() {
         </Logo>
         <Items>
           <Item>
-            <Link to="/">Home {homeMatch && <Circle layoutId="circle" />}</Link>
+            <Link to={"/"}>홈 {homeMatch && <Circle layoutId="circle" />}</Link>
           </Item>
           <Item>
-            <Link to="/tv">
-              Tv Shows {tvMatch && <Circle layoutId="circle" />}
+            <Link to={"/tv"}>
+              시리즈{tvMatch && <Circle layoutId="circle" />}
             </Link>
           </Item>
         </Items>
