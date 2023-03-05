@@ -61,3 +61,15 @@ export const getTvAiringToday = () => {
     (response) => response.json()
   );
 };
+
+export const searchTvs = (keyword: string) => {
+  return fetch(
+    `${BASE_PATH}/search/tv?api_key=${API_KEY}&query=${keyword}`
+  ).then((res) => res.json());
+};
+
+export const searchMovies = (keyword: string) => {
+  return fetch(
+    `${BASE_PATH}/search/movie?api_key=${API_KEY}&query=${keyword}`
+  ).then((res) => res.json());
+};

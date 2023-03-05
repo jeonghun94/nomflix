@@ -79,8 +79,8 @@ const infoVariants = {
 
 interface HomeSliderProps {
   data: IMovie[];
-  type: "nowPlaying" | "topRated" | "upComing";
-  title: string;
+  title?: string;
+  type?: "nowPlaying" | "topRated" | "upComing";
 }
 
 interface IMovie {

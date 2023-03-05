@@ -7,6 +7,8 @@ import {
   IGetMoviesResult,
   getTvTopRated,
   getTvAiringToday,
+  searchTvs,
+  searchMovies,
 } from "../api";
 
 export const useHomeQuery = () => {
@@ -39,4 +41,17 @@ export const useTvQuery = () => {
   );
 
   return [popular, topRated, airingToday];
+};
+
+export const useSearchQuery = (keyword: string) => {
+  const movieSearch = useQuery<IGetMoviesResult>(
+    ["searchMovies", keyword],
+    () => searchTvs(keyword)
+  );
+
+  const tvSearch = useQuery<IGetMoviesResult>(["searchTvs", keyword], () =>
+    searchTvs(keyword)
+  );
+
+  return [movieSearch, tvSearch];
 };
