@@ -26,20 +26,38 @@ export function getMovies() {
   );
 }
 
-export const getLatest = () => {
+export const getMoviesLatest = () => {
   return fetch(`${BASE_PATH}/movie/latest?api_key=${API_KEY}`).then(
     (response) => response.json()
   );
 };
 
-export function getTopLated() {
+export function getMoviesTopLated() {
   return fetch(`${BASE_PATH}/movie/top_rated?api_key=${API_KEY}`).then(
     (response) => response.json()
   );
 }
 
-export function getUpComing() {
+export function getMoviesUpComing() {
   return fetch(`${BASE_PATH}/movie/upcoming?api_key=${API_KEY}`).then(
     (response) => response.json()
   );
 }
+
+export const getTvPopular = () => {
+  return fetch(`${BASE_PATH}/tv/popular?api_key=${API_KEY}`).then((response) =>
+    response.json()
+  );
+};
+
+export const getTvTopRated = () => {
+  return fetch(`${BASE_PATH}/tv/top_rated?api_key=${API_KEY}`).then(
+    (response) => response.json()
+  );
+};
+
+export const getTvAiringToday = () => {
+  return fetch(`${BASE_PATH}/tv/on_the_air?api_key=${API_KEY}`).then(
+    (response) => response.json()
+  );
+};

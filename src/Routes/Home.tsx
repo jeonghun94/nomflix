@@ -125,7 +125,7 @@ const Home = () => {
             <Slider
               data={nowPlayingData?.results!}
               type="nowPlaying"
-              title="지금 뜨는 콘텐츠"
+              title="지금 뜨는 영화"
             />
             <Slider
               data={topRatedData?.results!}
@@ -135,7 +135,7 @@ const Home = () => {
             <Slider
               data={upComingData?.results!}
               type="upComing"
-              title="새로 올라온 콘텐츠"
+              title="새로 올라온 영화"
             />
           </Sliders>
 

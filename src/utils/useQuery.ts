@@ -1,5 +1,13 @@
 import { useQuery } from "react-query";
-import { getMovies, getTopLated, getUpComing, IGetMoviesResult } from "../api";
+import {
+  getMovies,
+  getTvPopular,
+  getMoviesTopLated,
+  getMoviesUpComing,
+  IGetMoviesResult,
+  getTvTopRated,
+  getTvAiringToday,
+} from "../api";
 
 export const useHomeQuery = () => {
   const nowPlaying = useQuery<IGetMoviesResult>(
@@ -8,12 +16,27 @@ export const useHomeQuery = () => {
   );
   const topRated = useQuery<IGetMoviesResult>(
     ["movies", "topRated"],
-    getTopLated
+    getMoviesTopLated
   );
   const upComing = useQuery<IGetMoviesResult>(
     ["movies", "upComing"],
-    getUpComing
+    getMoviesUpComing
   );
 
   return [nowPlaying, topRated, upComing];
+};
+
+export const useTvQuery = () => {
+  const popular = useQuery<IGetMoviesResult>(["tv", "popular"], getTvPopular);
+
+  const topRated = useQuery<IGetMoviesResult>(
+    ["tv", "topRated"],
+    getTvTopRated
+  );
+  const airingToday = useQuery<IGetMoviesResult>(
+    ["tv", "airingToday"],
+    getTvAiringToday
+  );
+
+  return [popular, topRated, airingToday];
 };
