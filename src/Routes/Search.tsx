@@ -151,6 +151,11 @@ const Search = () => {
     }
   `;
 
+  const Divider = styled.span`
+    margin: 0 10px;
+    boder-right: 1px solid #c8c8c8 !important;
+  `;
+
   return (
     <>
       {movieLoading || tvLoading ? (
@@ -183,7 +188,10 @@ const Search = () => {
           <Heading>
             다음과 관련된 콘텐츠:{``}
             {results.map((movie) => (
-              <RelatedName>{movie.name} </RelatedName>
+              <RelatedName>
+                {movie.name}
+                <Divider>|</Divider>
+              </RelatedName>
             ))}
           </Heading>
           <Contents>

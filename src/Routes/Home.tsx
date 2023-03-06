@@ -82,11 +82,16 @@ const BigOverview = styled.p`
 `;
 
 const Sliders = styled.div`
-  width: 100%;
-  height: auto;
+  // width: 100%;
+  // height: auto;
+  // display: flex;
+  // flex-direction: column;
+  // gap: 200px;
+
+  margin-top: -5rem;
   display: flex;
   flex-direction: column;
-  gap: 200px;
+  gap: 1.75rem;
 `;
 const Home = () => {
   const navigate = useNavigate();
@@ -125,18 +130,18 @@ const Home = () => {
             <Slider
               data={nowPlayingData?.results!}
               title="지금 뜨는 영화"
-              type="nowPlaying"
+              type="movie"
             />
             <Slider
               data={topRatedData?.results!}
               title="오늘 대한민국 Top 10 영화"
-              type="topRated"
+              type="movie"
             />
-            {/* <Slider
+            <Slider
               data={upComingData?.results!}
               title="새로 올라온 영화"
-              type="upComing"
-            /> */}
+              type="movie"
+            />
           </Sliders>
 
           <AnimatePresence>

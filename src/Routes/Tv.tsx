@@ -82,11 +82,16 @@ const BigOverview = styled.p`
 `;
 
 const Sliders = styled.div`
-  width: 100%;
-  height: auto;
+  // width: 100%;
+  // height: auto;
+  // display: flex;
+  // flex-direction: column;
+  // gap: 200px;
+
+  margin-top: -5rem;
   display: flex;
   flex-direction: column;
-  gap: 200px;
+  gap: 1.75rem;
 `;
 const Tv = () => {
   const navigate = useNavigate();
@@ -122,18 +127,18 @@ const Tv = () => {
           <Sliders>
             <Slider
               data={topRatedData?.results!}
-              type="topRated"
               title="오늘 대한민국 Top 10 콘텐츠"
+              type="tv"
             />
             <Slider
               data={popularData?.results!}
-              type="nowPlaying"
               title="넷플릭스 인기 콘텐츠"
+              type="tv"
             />
             <Slider
               data={airingData?.results!}
-              type="upComing"
               title="새로 뜨는 콘텐츠"
+              type="tv"
             />
           </Sliders>
 
