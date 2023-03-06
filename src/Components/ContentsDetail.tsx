@@ -49,7 +49,7 @@ const BigReleaseDate = styled.p`
   margin-top: -50px;
 `;
 
-const Test = styled.div`
+const BigCoverContainer = styled.div`
   position: absolute;
   top: 0;
   width: 40vw;
@@ -59,6 +59,20 @@ const Test = styled.div`
   align-items: center;
   jeustify-content: center;
   padding: 20px;
+`;
+
+const BigCoverContainerLeft = styled.div``;
+const BigCoverContainerRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+`;
+
+const Poster = styled.img`
+  width: 200px;
+  height: 300px;
+  border-radius: 10px;
 `;
 
 interface DetailProps {
@@ -97,26 +111,14 @@ const ContentsDetail = ({ type }: DetailProps) => {
                     )})`,
                   }}
                 />
-                <Test>
-                  <div>
-                    <img
-                      style={{
-                        width: "200px",
-                        height: "300px",
-                        borderRadius: "10px",
-                      }}
+                <BigCoverContainer>
+                  <BigCoverContainerLeft>
+                    <Poster
                       src={makeImagePath(clickedMovie.poster_path, "w500")}
                       alt={clickedMovie.title}
                     />
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "15px",
-                      justifyContent: "center",
-                    }}
-                  >
+                  </BigCoverContainerLeft>
+                  <BigCoverContainerRight>
                     <BigTitle>
                       {type === "movie"
                         ? clickedMovie.title
@@ -129,8 +131,8 @@ const ContentsDetail = ({ type }: DetailProps) => {
                       </BigReleaseDate>
                     )}
                     <BigOverview>{clickedMovie.overview}</BigOverview>
-                  </div>
-                </Test>
+                  </BigCoverContainerRight>
+                </BigCoverContainer>
               </>
             )}
           </BigMovie>
