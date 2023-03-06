@@ -10,7 +10,7 @@ import { useState } from "react";
 const Slider = styled.div`
   position: relative;
   top: -100px;
-  margin: 30px 0px 0px 60px;
+  margin: 30px 0px 0px 0px;
 `;
 
 const Row = styled(motion.div)`
@@ -19,6 +19,7 @@ const Row = styled(motion.div)`
   grid-template-columns: repeat(6, 1fr);
   position: absolute;
   width: 100%;
+  height: 150px;
 `;
 
 const Box = styled(motion.div)<{ $bgPhoto: string }>`
@@ -208,7 +209,7 @@ const HomeSlider = ({ data, type, title }: HomeSliderProps) => {
             .map((movie: any) => (
               <Box
                 layoutId={movie.id + ""}
-                key={movie.id}
+                key={`${type?.charAt(0)}:${movie.id}`}
                 whileHover="hover"
                 initial="normal"
                 variants={boxVariants}
@@ -216,6 +217,7 @@ const HomeSlider = ({ data, type, title }: HomeSliderProps) => {
                 transition={{ type: "tween" }}
                 $bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
               >
+                {type?.charAt(0) + movie.id}
                 <Info variants={infoVariants}>
                   <h4>{movie.title}</h4>
                 </Info>

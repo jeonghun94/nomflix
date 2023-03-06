@@ -124,19 +124,19 @@ const Home = () => {
           <Sliders>
             <Slider
               data={nowPlayingData?.results!}
-              type="nowPlaying"
               title="지금 뜨는 영화"
+              type="nowPlaying"
             />
             <Slider
               data={topRatedData?.results!}
-              type="topRated"
               title="오늘 대한민국 Top 10 영화"
+              type="topRated"
             />
-            <Slider
+            {/* <Slider
               data={upComingData?.results!}
-              type="upComing"
               title="새로 올라온 영화"
-            />
+              type="upComing"
+            /> */}
           </Sliders>
 
           <AnimatePresence>

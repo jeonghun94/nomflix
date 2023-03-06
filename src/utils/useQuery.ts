@@ -8,7 +8,6 @@ import {
   getTvTopRated,
   getTvAiringToday,
   searchTvs,
-  searchMovies,
 } from "../api";
 
 export const useHomeQuery = () => {
