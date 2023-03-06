@@ -7,9 +7,11 @@ interface IMovie {
   title: string;
   overview: string;
   layoutId: string;
+  name?: string;
+  release_date?: string;
 }
 
-export const contentState = atom<IMovie | null>({
-  key: "contentState",
+export const clickedState = atom<IMovie | null>({
+  key: "clickedState",
   default: null,
 });

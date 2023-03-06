@@ -1,9 +1,8 @@
 import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-
 import styled from "styled-components";
-import { contentState } from "../atoms";
+import { clickedState } from "../atoms";
 import { makeImagePath } from "../utils";
 
 const Overlay = styled(motion.div)`
@@ -17,7 +16,7 @@ const Overlay = styled(motion.div)`
 const BigMovie = styled(motion.div)`
   position: absolute;
   width: 40vw;
-  height: 80vh;
+  height: 70vh;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -30,21 +29,36 @@ const BigCover = styled.div`
   background-size: cover;
   background-position: center center;
   height: 400px;
+  position: relative;
 `;
 
 const BigTitle = styled.h3`
   color: ${(props) => props.theme.white.lighter};
   padding: 20px;
   font-size: 46px;
-  position: relative;
   top: -80px;
 `;
 
 const BigOverview = styled.p`
   padding: 20px;
-  position: relative;
   top: -80px;
-  color: ${(props) => props.theme.white.lighter};
+`;
+
+const BigReleaseDate = styled.p`
+  padding: 20px;
+  margin-top: -50px;
+`;
+
+const Test = styled.div`
+  position: absolute;
+  top: 0;
+  width: 40vw;
+  height: 70vh;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  jeustify-content: center;
+  padding: 20px;
 `;
 
 interface DetailProps {
@@ -54,15 +68,15 @@ interface DetailProps {
 const ContentsDetail = ({ type }: DetailProps) => {
   const navigate = useNavigate();
   const { scrollY } = useScroll();
-  const bigMovieMatch: PathMatch<string> | null = useMatch(
+  const pathMatch: PathMatch<string> | null = useMatch(
     type === "movie" ? "/movies/:id" : "/tv/:id"
   );
   const onOverlayClick = () => navigate(type === "movie" ? "/" : "/tv");
-  const clickedMovie = useRecoilValue(contentState);
+  const clickedMovie = useRecoilValue(clickedState);
 
   return (
     <AnimatePresence>
-      {bigMovieMatch ? (
+      {pathMatch ? (
         <>
           <Overlay
             onClick={onOverlayClick}
@@ -71,7 +85,7 @@ const ContentsDetail = ({ type }: DetailProps) => {
           />
           <BigMovie
             style={{ top: scrollY.get() + 100 }}
-            layoutId={bigMovieMatch.params.movieId}
+            layoutId={pathMatch.params.movieId}
           >
             {clickedMovie && (
               <>
@@ -83,8 +97,40 @@ const ContentsDetail = ({ type }: DetailProps) => {
                     )})`,
                   }}
                 />
-                <BigTitle>{clickedMovie.title}</BigTitle>
-                <BigOverview>{clickedMovie.overview}</BigOverview>
+                <Test>
+                  <div>
+                    <img
+                      style={{
+                        width: "200px",
+                        height: "300px",
+                        borderRadius: "10px",
+                      }}
+                      src={makeImagePath(clickedMovie.poster_path, "w500")}
+                      alt={clickedMovie.title}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "15px",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <BigTitle>
+                      {type === "movie"
+                        ? clickedMovie.title
+                        : clickedMovie.name}
+                    </BigTitle>
+                    {clickedMovie.release_date && (
+                      <BigReleaseDate>
+                        {"Release: "}
+                        {clickedMovie.release_date}
+                      </BigReleaseDate>
+                    )}
+                    <BigOverview>{clickedMovie.overview}</BigOverview>
+                  </div>
+                </Test>
               </>
             )}
           </BigMovie>

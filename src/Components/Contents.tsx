@@ -5,9 +5,9 @@ import { useSetRecoilState } from "recoil";
 import { makeImagePath } from "../utils";
 import { useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import { contentState } from "../atoms";
+import { clickedState } from "../atoms";
 
-interface HomeSliderProps {
+interface ContentsProps {
   data: IMovie[];
   title: string;
   type: "movie" | "tv";
@@ -27,10 +27,6 @@ const Title = styled.div`
   font-size: 1.5rem;
   padding-left: 50px;
 `;
-
-// const SliderWrapper = styled(motion.div)`
-//   position: relative;
-// `;
 
 const SliderButton = styled.button<{ position: "left" | "right" }>`
   position: absolute;
@@ -86,7 +82,11 @@ const Info = styled(motion.div)`
   opacity: 0;
   position: absolute;
   width: 100%;
-  top: 100%;
+  bottom: 0;
+  color: white;
+  font-weight: 600;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   h4 {
     text-align: center;
     font-size: 18px;
@@ -104,10 +104,13 @@ const infoVariants = {
   },
 };
 
-const HomeSlider = ({ data, type, title }: HomeSliderProps) => {
+const Contents = ({ data, type, title }: ContentsProps) => {
   const offset = 6;
   const navigate = useNavigate();
-  const setDetail = useSetRecoilState(contentState);
+  const setDetail = useSetRecoilState(clickedState);
+  const [index, setIndex] = useState(0);
+  const [leaving, setLeaving] = useState(false);
+  const toggleLeaving = () => setLeaving((prev) => !prev);
 
   const onBoxClicked = (movieId: number) => {
     const selectedContent = data.filter(({ id }) => id === movieId)[0];
@@ -121,10 +124,6 @@ const HomeSlider = ({ data, type, title }: HomeSliderProps) => {
         : navigate(`/tv/${movieId}`);
     }
   };
-
-  const [index, setIndex] = useState(0);
-  const [leaving, setLeaving] = useState(false);
-  const toggleLeaving = () => setLeaving((prev) => !prev);
 
   const increaseIndex = async () => {
     if (data) {
@@ -225,4 +224,4 @@ const HomeSlider = ({ data, type, title }: HomeSliderProps) => {
   );
 };
 
-export default HomeSlider;
+export default Contents;

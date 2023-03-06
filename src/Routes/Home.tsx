@@ -50,6 +50,8 @@ const Home = () => {
     { data: upComingData, isLoading: upComingLoading },
   ] = useHomeQuery();
 
+  console.log(nowPlayingData);
+
   return (
     <Wrapper>
       {nowPlayingLoading || topRatedLoading || upComingLoading ? (
