@@ -48,6 +48,10 @@ const Search = () => {
     position: absolute;
     width: 100%;
     bottom: 0;
+    color: white;
+    font-weight: 600;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     h4 {
       text-align: center;
       font-size: 18px;
@@ -202,7 +206,6 @@ const Search = () => {
                 whileHover="hover"
                 initial="normal"
                 variants={boxVariants}
-                //  onClick={() => onBoxClicked(movie.id)}
                 transition={{ type: "tween" }}
                 $bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
               >

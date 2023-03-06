@@ -73,3 +73,15 @@ export const searchMovies = (keyword: string) => {
     `${BASE_PATH}/search/movie?api_key=${API_KEY}&query=${keyword}`
   ).then((res) => res.json());
 };
+
+export function getMovieDetail(id: number) {
+  return fetch(`${BASE_PATH}/movie/${id}?api_key=${API_KEY}`).then((res) =>
+    res.json()
+  );
+}
+
+export function getTvDetail(id: number) {
+  return fetch(`${BASE_PATH}/tv/${id}?api_key=${API_KEY}`).then((res) =>
+    res.json()
+  );
+}
