@@ -28,15 +28,26 @@ const Title = styled.div`
   padding-left: 50px;
 `;
 
-const SliderButton = styled.button<{ position: "left" | "right" }>`
+const Button = styled.button`
   position: absolute;
   width: 3rem;
   height: 100%;
   border: none;
   background-color: transparent;
   color: white;
-  left: ${(props) => (props.position === "left" ? "0" : "")};
-  right: ${(props) => (props.position === "right" ? "0" : "")};
+`;
+
+const PrevButton = styled(Button)`
+  left: 0;
+`;
+
+const NextButton = styled(Button)`
+  position: absolute;
+  right: 0;
+`;
+
+const Wrapper = styled(motion.div)`
+  position: relative;
 `;
 
 const Slider = styled.div`
@@ -176,50 +187,52 @@ const Contents = ({ data, type, title }: ContentsProps) => {
   return (
     <>
       <Title>{title}</Title>
-      <SliderButton position="left" onClick={decreaseIndex}>
-        <FaAngleLeft />
-      </SliderButton>
-      <SliderButton position="right" onClick={increaseIndex}>
-        <FaAngleRight />
-      </SliderButton>
-      <Slider>
-        <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-          <Row
-            variants={rowVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ type: "tween", duration: 1 }}
-            key={index}
-          >
-            {data
-              .slice(1)
-              .slice(offset * index, offset * index + offset)
-              .map((content) => (
-                <Box
-                  layoutId={
-                    title + (type === "tv" ? content.name : content.title)
-                  }
-                  onClick={() => onBoxClicked(content.id)}
-                  key={content.id}
-                  whileHover="hover"
-                  variants={boxVariants}
-                  transition={{
-                    type: "tween",
-                  }}
-                  $bgPhoto={makeImagePath(
-                    content.backdrop_path ?? content.poster_path,
-                    "w500"
-                  )}
-                >
-                  <Info variants={infoVariants}>
-                    <h4>{content.title ?? content.name}</h4>
-                  </Info>
-                </Box>
-              ))}
-          </Row>
-        </AnimatePresence>
-      </Slider>
+      <Wrapper>
+        <PrevButton onClick={decreaseIndex}>
+          <FaAngleLeft />
+        </PrevButton>
+        <NextButton onClick={increaseIndex}>
+          <FaAngleRight />
+        </NextButton>
+        <Slider>
+          <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+            <Row
+              variants={rowVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{ type: "tween", duration: 1 }}
+              key={index}
+            >
+              {data
+                .slice(1)
+                .slice(offset * index, offset * index + offset)
+                .map((content) => (
+                  <Box
+                    layoutId={
+                      title + (type === "tv" ? content.name : content.title)
+                    }
+                    onClick={() => onBoxClicked(content.id)}
+                    key={content.id}
+                    whileHover="hover"
+                    variants={boxVariants}
+                    transition={{
+                      type: "tween",
+                    }}
+                    $bgPhoto={makeImagePath(
+                      content.backdrop_path ?? content.poster_path,
+                      "w500"
+                    )}
+                  >
+                    <Info variants={infoVariants}>
+                      <h4>{content.title ?? content.name}</h4>
+                    </Info>
+                  </Box>
+                ))}
+            </Row>
+          </AnimatePresence>
+        </Slider>
+      </Wrapper>
     </>
   );
 };
