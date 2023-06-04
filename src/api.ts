@@ -80,6 +80,12 @@ export function getMovieDetail(id: number) {
   );
 }
 
+export const getMovieVideo = (id: number) => {
+  return fetch(
+    `${BASE_PATH}/movie/${id}/videos?api_key=${API_KEY}&language=en-US`
+  ).then((res) => res.json());
+};
+
 export function getTvDetail(id: number) {
   return fetch(`${BASE_PATH}/tv/${id}?api_key=${API_KEY}`).then((res) =>
     res.json()

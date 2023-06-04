@@ -31,6 +31,7 @@ const Logo = styled(motion.svg)`
   width: 95px;
   height: 25px;
   fill: ${(props) => props.theme.red};
+  cursor: pointer;
   path {
     stroke-width: 6px;
   }
@@ -84,17 +85,17 @@ interface IForm {
   keyword: string;
 }
 
-const logoVariants = {
-  normal: {
-    fillOpacity: 1,
-  },
-  active: {
-    fillOpacity: [0, 1, 0],
-    transition: {
-      repeat: Infinity,
-    },
-  },
-};
+// const logoVariants = {
+//   normal: {
+//     fillOpacity: 1,
+//   },
+//   active: {
+//     fillOpacity: [0, 1, 0],
+//     transition: {
+//       repeat: Infinity,
+//     },
+//   },
+// };
 
 const navVariants = {
   top: {
@@ -144,9 +145,9 @@ function Header() {
     <Nav variants={navVariants} animate={navAnimation} initial={"top"}>
       <Col>
         <Logo
-          variants={logoVariants}
-          whileHover="active"
-          animate="normal"
+          // variants={logoVariants}
+          // whileHover="active"
+          // animate="normal"
           xmlns="http://www.w3.org/2000/svg"
           width="1024"
           height="276.742"
